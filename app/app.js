@@ -60,10 +60,16 @@ app.get('/new/*', function(req, res) {
 				});
 				doc.save(function(err) {
 					if(err) throw err;
-					return res.json(doc);
+					return res.json({
+						short: `${req.headers.host}/${doc.uid}`,
+						url: doc.url
+					});
 				});
 			} else {
-				return res.status(302).json(result);
+				return res.status(302).json({ 
+					short: `${req.headers.host}/${result.uid}`,
+					url: result.url
+				});
 			}
 		})
 });
