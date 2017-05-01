@@ -92,5 +92,6 @@ mongoose.connection.on('error', function(err) {
 mongoose.Promise = global.Promise;
 
 app.listen(port, function() {
+	console.log(`mongoUri: ${mongoUri}`);
 	console.log('short-url-ms listening on port ' + port);
 });
