@@ -1,0 +1,15 @@
+{
+  "name": "short-it",
+  "version": "1.0.0",
+  "description": "Url shortener microservice",
+  "main": "app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patrick San Juan <psj.webdev@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongoose": "^4.9.6"
+  }
+}
