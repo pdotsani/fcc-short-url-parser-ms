@@ -44,34 +44,40 @@ app.get('/:id', function(req, res) {
 	URL.findOne({ uid: id })
 		.exec(function(err, urlDoc) {
 			if(err) throw err;
+			if(!urlDoc) return res.sendStatus(404);
 			return res.redirect(urlDoc.url);
 		});
 });
 
 app.get('/new/*', function(req, res) {
 	var url = req.params[0];
-	URL.findOne({ url: url })
-		.exec(function(err, result) {
-			if(err) throw err;
-			if(!result) {
-				var doc = new URL({
-					uid: createID(),
-					url: url
-				});
-				doc.save(function(err) {
-					if(err) throw err;
-					return res.json({
-						short: `${req.headers.host}/${doc.uid}`,
-						url: doc.url
+	var validUrl = new RegExp('https{0,1}:\/\/');
+	if(validUrl.test(url)) {
+		URL.findOne({ url: url })
+			.exec(function(err, result) {
+				if(err) throw err;
+				if(!result) {
+					var doc = new URL({
+						uid: createID(),
+						url: url
 					});
-				});
-			} else {
-				return res.status(302).json({ 
-					short: `${req.headers.host}/${result.uid}`,
-					url: result.url
-				});
-			}
-		})
+					doc.save(function(err) {
+						if(err) throw err;
+						return res.json({
+							short: `${req.headers.host}/${doc.uid}`,
+							url: doc.url
+						});
+					});
+				} else {
+					return res.status(302).json({ 
+						short: `${req.headers.host}/${result.uid}`,
+						url: result.url
+					});
+				}
+			});
+	} else {
+		return res.sendStatus(400);
+	}
 });
 
 // Connect to database
